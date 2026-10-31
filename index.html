@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Weather Dashboard</title>
+        <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Live Weather Dashboard</h1>
+  </header>
+
+  <main>
+    <section class="search-section">
+      <form>
+        <input type="text" placeholder="Enter a city name" />
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <section id="current-weather" class="current-weather-section">
+      <h2 id="city-name-date">City Name (Date)</h2>
+      <div class="weather-data">
+        <p id="temperature">Temperature: --</p>
+        <p id="humidity">Humidity: --</p>
+        <p id="wind-speed">Wind Speed: --</p>
+      </div>
+    </section>
+
+    <section id="forecast" class="forecast-section">
+      <h2>5-Day Forecast</h2>
+      <div id="forecast-container" class="forecast-cards-container">
+        
+      </div>
+    </section>
+  </main>
+
+  <!-- Our script tag remains at the very end of the body -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+/* Base reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+p,
+form {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Design tokens */
+:root {
+  --color-primary-dark: #2c3e50;
+  --color-primary-light: #3498db;
+  --color-bg-main: #ecf0f1;
+  --color-bg-card: #ffffff;
+  --color-text-dark: #34495e;
+  --color-text-light: #ffffff;
+  --color-border: #bdc3c7;
+
+  --font-family-main: 'Poppins', sans-serif;
+
+  --spacing-unit: 1rem;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+}
+
+/* Global styles */
+body {
+  font-family: var(--font-family-main);
+  background-color: var(--color-bg-main);
+  color: var(--color-text-dark);
+  line-height: 1.5;
+}
+
+/* Page layout */
+header {
+  background-color: var(--color-primary-dark);
+  color: var(--color-text-light);
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2);
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: calc(var(--spacing-unit) * 2);
+  padding: calc(var(--spacing-unit) * 2);
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+/* Search form */
+.search-section input {
+  width: 100%;
+  padding: var(--spacing-unit);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-section input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+}
+
+.search-section button {
+  width: 100%;
+  display: block;
+  margin-top: var(--spacing-unit);
+  padding: var(--spacing-unit);
+  background-color: var(--color-primary-light);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.search-section button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Current weather card */
+.current-weather-section {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: calc(var(--spacing-unit) * 2);
+}
+
+.current-weather-section h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-unit);
+}
+
+.current-weather-section p {
+  font-size: 1.1rem;
+  margin-bottom: calc(var(--spacing-unit) / 2);
+}
+
+.current-weather-section p:last-child {
+  margin-bottom: 0;
+}
+
+/* Forecast section */
+.forecast-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-unit);
+}
+
+.forecast-cards-container {
+  display: flex;
+  gap: var(--spacing-unit);
+}
+
+.forecast-card {
+  flex: 1;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-unit);
+  text-align: center;
+}
+
+.forecast-card h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.forecast-card .weather-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0.5rem auto;
+  background-color: #eee;
+}
+
+.forecast-card p {
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .forecast-cards-container {
+    flex-wrap: wrap;
+  }
+
+  .forecast-card {
+    flex: 1 1 160px;
+  }
+}
