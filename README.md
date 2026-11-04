@@ -1,19 +1,8 @@
-# Weather API Project
+# Weather Dashboard
 
-A weather application currently in development.
+Weather app built with Node.js, Express and the OpenWeatherMap API.
 
-## Current Status
-- Basic HTML, CSS, and JavaScript created
-- Node.js API integration planned
-
-## Planned Features
-- Search weather by city
-- Display current weather
-- Display weather forecast
-- Connect frontend with Node.js backend
-
-## Tech Stack
-- HTML
-- CSS
-- JavaScript
-- Node.js
+## Setup
+1. `npm install`
+2. Copy `.env.example` to `.env` and add your API key
+3. `npm start`
