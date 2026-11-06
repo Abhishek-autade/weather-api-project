@@ -14,6 +14,9 @@ const forecastContainerEl = document.querySelector('#forecast-container');
 // ---------- State ----------
 let searchHistory = JSON.parse(localStorage.getItem('weatherHistory')) || [];
 
+// OpenWeather returns wind in m/s (metric). Convert to km/h.
+const toKmh = (metersPerSecond) => (metersPerSecond * 3.6).toFixed(1);
+
 // ---------- Search history ----------
 function renderSearchHistory() {
   historyContainerEl.innerHTML = '';
@@ -41,7 +44,7 @@ function displayCurrentWeather(data) {
   cityNameEl.textContent = `${data.name} (${currentDate})`;
   temperatureEl.textContent = `${Math.round(data.main.temp)}`;
   humidityEl.textContent = `${data.main.humidity}`;
-  windSpeedEl.textContent = `${data.wind.speed}`;
+  windSpeedEl.textContent = toKmh(data.wind.speed);
 }
 
 function displayForecast(forecastList) {
@@ -70,7 +73,10 @@ function displayForecast(forecastList) {
     const forecastHumidityEl = document.createElement('p');
     forecastHumidityEl.textContent = `Humidity: ${dailyForecast.main.humidity}%`;
 
-    card.append(dateEl, iconEl, tempEl, forecastHumidityEl);
+    const forecastWindEl = document.createElement('p');
+    forecastWindEl.textContent = `Wind: ${toKmh(dailyForecast.wind.speed)} km/h`;
+
+    card.append(dateEl, iconEl, tempEl, forecastHumidityEl, forecastWindEl);
     forecastContainerEl.append(card);
   }
 }
