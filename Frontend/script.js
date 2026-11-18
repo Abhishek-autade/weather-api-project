@@ -10,6 +10,7 @@ const temperatureEl = document.querySelector('#temperature');
 const humidityEl = document.querySelector('#humidity');
 const windSpeedEl = document.querySelector('#wind-speed');
 const forecastContainerEl = document.querySelector('#forecast-container');
+const sceneEl = document.querySelector('#weather-scene');
 
 // ---------- State ----------
 let searchHistory = JSON.parse(localStorage.getItem('weatherHistory')) || [];
@@ -38,6 +39,93 @@ function saveCityToHistory(city) {
   renderSearchHistory();
 }
 
+// ---------- Animated weather scene ----------
+const rnd = (a, b) => a + Math.random() * (b - a);
+const piece = (cls, style = '') => `<div class="${cls}" style="${style}"></div>`;
+
+function cloudsHTML(count) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += piece('cloud',
+      `top:${rnd(40, 320).toFixed(0)}px;scale:${rnd(0.7, 1.6).toFixed(2)};` +
+      `opacity:${rnd(0.6, 0.95).toFixed(2)};animation-duration:${rnd(40, 90).toFixed(0)}s;` +
+      `animation-delay:-${rnd(0, 60).toFixed(0)}s`);
+  }
+  return html;
+}
+
+function rainHTML(count) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += piece('drop',
+      `left:${rnd(0, 100).toFixed(1)}%;opacity:${rnd(0.4, 0.9).toFixed(2)};` +
+      `animation-duration:${rnd(0.55, 1).toFixed(2)}s;animation-delay:-${rnd(0, 2).toFixed(2)}s`);
+  }
+  return html;
+}
+
+function snowHTML(count) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    const size = rnd(4, 10).toFixed(1);
+    html += piece('flake',
+      `left:${rnd(0, 100).toFixed(1)}%;width:${size}px;height:${size}px;opacity:${rnd(0.5, 1).toFixed(2)};` +
+      `animation-duration:${rnd(7, 14).toFixed(1)}s;animation-delay:-${rnd(0, 12).toFixed(1)}s`);
+  }
+  return html;
+}
+
+function starsHTML(count) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += piece('star',
+      `left:${rnd(0, 100).toFixed(1)}%;top:${rnd(0, 90).toFixed(1)}%;` +
+      `animation-duration:${rnd(2, 5).toFixed(1)}s;animation-delay:-${rnd(0, 5).toFixed(1)}s`);
+  }
+  return html;
+}
+
+function fogHTML(count) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += piece('fog',
+      `top:${(i * 22 + rnd(0, 10)).toFixed(0)}%;animation-duration:${rnd(14, 26).toFixed(0)}s;` +
+      `animation-delay:-${rnd(0, 10).toFixed(0)}s`);
+  }
+  return html;
+}
+
+function getSceneType(weather) {
+  const main = weather.main.toLowerCase();
+  const night = weather.icon.endsWith('n');
+  if (main === 'thunderstorm') return { type: 'thunder', night };
+  if (main === 'rain' || main === 'drizzle') return { type: 'rain', night };
+  if (main === 'snow') return { type: 'snow', night };
+  if (main === 'clouds') return { type: 'clouds', night };
+  if (main === 'clear') return { type: night ? 'night' : 'sunny', night };
+  return { type: 'mist', night };
+}
+
+// Test any scene from the console, e.g. showWeatherScene('snow')
+function showWeatherScene(type, night = false) {
+  const scenes = {
+    sunny: () => '<div class="sun"><div class="sun-rays"></div><div class="sun-core"></div></div>' + cloudsHTML(3),
+    clouds: () => cloudsHTML(9),
+    rain: () => cloudsHTML(5) + rainHTML(140),
+    thunder: () => cloudsHTML(6) + rainHTML(170) + piece('lightning'),
+    snow: () => cloudsHTML(3) + snowHTML(90),
+    mist: () => fogHTML(5),
+    night: () => piece('moon') + starsHTML(70)
+  };
+  document.body.className = `theme-${type}${night ? ' is-night' : ''}`;
+  sceneEl.innerHTML = `<div class="scene-inner">${scenes[type]()}</div>`;
+}
+
+function applyWeatherScene(data) {
+  const { type, night } = getSceneType(data.weather[0]);
+  showWeatherScene(type, night);
+}
+
 // ---------- Update UI ----------
 function displayCurrentWeather(data) {
   const currentDate = new Date().toLocaleDateString();
@@ -45,6 +133,7 @@ function displayCurrentWeather(data) {
   temperatureEl.textContent = `${Math.round(data.main.temp)}`;
   humidityEl.textContent = `${data.main.humidity}`;
   windSpeedEl.textContent = toKmh(data.wind.speed);
+  applyWeatherScene(data);
 }
 
 function displayForecast(forecastList) {
